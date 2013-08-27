@@ -1,0 +1,55 @@
+<?php
+ob_start();
+include_once 'connect.php';
+include_once 'shell.php';
+
+?>
+<html>
+<div id="MaintenanceContainerSalesRep">
+	<p style="text-align: center;"><b><font size="6">Parts Information</font></b></p><br/>
+	<center><table border="1" >
+			<tr>
+			<td><p>Part Number</p></td>
+			<td><p>Description</p></td>
+			<td><p>On Hand</p></td>
+			<td><p>Class</p></td>
+			<td><p>Warehouse</p></td>
+			<td><p>Price</p></td>
+			</tr>
+	 
+	
+
+<?php
+$query = mysql_query("select * from PART");
+	if($query)
+	{//it worked
+	}
+	else
+	{
+		die('<p> Query Error: .<b> ' . mysql_error().'</b></p>');
+	}
+	while($num_row=mysql_fetch_array($query))
+		{
+			?>
+			<html>
+			<tr>
+			<td><?php echo "{$num_row['PART_NUM']}"; ?></td>
+			<td><?php echo "{$num_row['DESCRIPTION']}"; ?></td>
+			<td><?php echo "{$num_row['ON_HAND']}"; ?></td>
+			<td><?php echo "{$num_row['CLASS']}"; ?></td>
+			<td><?php echo "{$num_row['WAREHOUSE']}"; ?></td>
+			<td><?php echo "{$num_row['PRICE']}"; ?></td>
+			</tr>
+			</html>
+			<?php
+
+		}
+?>
+</table><center>
+<p style="text-align: center;"><a href="Premiere_Products_Listings.html"><b>Back to Listings Home</b></a></p><br />
+<center><span style="">  Date Last Updated: 02/10/2013 Webmaster: pebcac@pebcac.com </span></center>
+</html>
+
+<?php
+ob_flush();
+?>

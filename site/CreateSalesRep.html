@@ -1,0 +1,60 @@
+<?php
+ob_start();
+include_once 'connect.php';
+include_once 'shell.php';
+
+?>
+<html>
+<div id="MaintenanceContainerSalesRep">
+	<p style="text-align: center;"><b><font size="6">Sales Representative</font></b></p><br/>
+	<center><table border="1" >
+			<tr>
+			<td><p>Rep Number</p></td>
+			<td><p>Last Name</p></td>
+			<td><p>First Name</p></td>
+			<td><p>Street</p></td>
+			<td><p>City</p></td>
+			<td><p>State</p></td>
+			<td><p>Zip</p></td>
+			<td><p>Comission</p></td>
+			<td><p>Rate</p></td>
+			</tr>
+	 
+	
+<?php
+$salesrep = mysql_query("select * from REP");
+	if($salesrep)
+	{//it worked
+	}
+	else
+	{
+		die('<p> Query Error: .<b> ' . mysql_error().'</b></p>');
+	}
+	while($num_row=mysql_fetch_array($salesrep))
+		{
+			?>
+			<html>
+			<tr>
+			<td><?php echo "{$num_row['REP_NUM']}"; ?></td>
+			<td><?php echo "{$num_row['LAST_NAME']}"; ?></td>
+			<td><?php echo "{$num_row['FIRST_NAME']}"; ?></td>
+			<td><?php echo "{$num_row['STREET']}"; ?></td>
+			<td><?php echo "{$num_row['CITY']}"; ?></td>
+			<td><?php echo "{$num_row['STATE']}"; ?></td>
+			<td><?php echo "{$num_row['ZIP']}"; ?></td>
+			<td><?php echo "{$num_row['COMMISSION']}"; ?></td>
+			<td><?php echo "{$num_row['RATE']}"; ?></td>
+			</tr>
+			</html>
+			<?php
+
+		}
+?>
+</table><center>
+<p style="text-align: center;"><a href="Premiere_Products_Listings.html"><b>Back to Listings Home</b></a></p><br />
+<center><span style="">  Date Last Updated: 02/10/2013 Webmaster: pebcac@pebcac.com </span></center>
+</html>
+
+<?php
+ob_flush();
+?>

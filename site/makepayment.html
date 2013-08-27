@@ -1,0 +1,106 @@
+<?php
+ob_start();
+session_start();
+$customernum = $_SESSION['customernum'];
+include_once 'connect.php';
+include_once 'shell.php';
+?>
+
+<html>
+<div id="MaintenanceContainerSalesRep">
+	<p style="text-align: center;"><b><font size="6">Make A Payment</font></b></p><br/>
+<?php
+
+	$customer=mysql_query("select * from CUSTOMER where CUSTOMER_NUM='$customernum'");
+			if($customer)
+			{//it worked dont do anything 
+			
+			}
+			else
+			{die('<p> Query Error: .<b> ' . mysql_error().'</b></p>');}
+			
+			?>
+			<center><table >
+			<tr>
+			<td><p>Customer Number</p></td>
+			<td><p>Customer Name</p></td>
+			<td><p>Balance</p></td>
+			<td><p>Credit Limit</p></td>
+			<td><p>Representative Number</p></td>
+			</tr>
+			<?php
+			while($num_row=mysql_fetch_array($customer))
+			{
+				?>
+			
+				<tr>
+				<td><?php echo "{$num_row['CUSTOMER_NUM']}"; ?></td>
+				<td><?php echo "{$num_row['CUSTOMER_NAME']}"; ?></td>
+				<td><?php echo "{$num_row['BALANCE']}"; ?></td>
+				<td><?php echo "{$num_row['CREDIT_LIMIT']}"; ?></td>
+				<td><?php echo "{$num_row['REP_NUM']}"; ?></td>
+				</tr>
+			
+				<?php
+					$balance = $num_row['BALANCE'];
+			}
+			?>
+			</table></center>
+			<form method="post">
+			<label for="customernum">Enter Payment:</label>
+					<input type="text" id="paymentnum" name="paymentnum" />
+					<input type="submit" value="Submit" name="payment" />
+			</form>	
+			<?php
+			
+			if(isset($_POST['payment']))
+			{	
+				
+					$paymentnum=$_POST['paymentnum'];
+					$newbalance = $balance - $paymentnum;
+					$updatequery=mysql_query("UPDATE CUSTOMER SET BALANCE='$newbalance' where CUSTOMER_NUM='$customernum' ");
+					if($customer)
+					{//it worked dont do anything 
+					
+					}
+					else
+					{die('<p> Query Error: .<b> ' . mysql_error().'</b></p>');}
+					
+					$customernew=mysql_query("select * from CUSTOMER where CUSTOMER_NUM='$customernum'");
+					?>
+					Payment accepted!
+				<center><table >
+				<tr>
+				<td><p>Customer Number</p></td>
+				<td><p>Customer Name</p></td>
+				<td><p>Balance</p></td>
+				<td><p>Credit Limit</p></td>
+				<td><p>Representative Number</p></td>
+				</tr>
+				<?php
+				while($num_row=mysql_fetch_array($customernew))
+				{
+					?>
+				
+					<tr>
+					<td><?php echo "{$num_row['CUSTOMER_NUM']}"; ?></td>
+					<td><?php echo "{$num_row['CUSTOMER_NAME']}"; ?></td>
+					<td><?php echo "{$num_row['BALANCE']}"; ?></td>
+					<td><?php echo "{$num_row['CREDIT_LIMIT']}"; ?></td>
+					<td><?php echo "{$num_row['REP_NUM']}"; ?></td>
+					</tr>
+				
+					<?php
+						$balance = $num_row['BALANCE'];
+				}
+				
+			}
+?>
+
+<p style="text-align: center;"><a href="Premiere_Products_Listings.html"><b>Back to Listings Home</b></a></p><br />	
+<br>
+	
+<center><span style="">  Date Last Updated: 02/10/2013 Webmaster: pebcac@pebcac.com </span></center>	
+	</div>
+<?php
+ob_flush();

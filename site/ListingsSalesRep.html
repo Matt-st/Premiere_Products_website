@@ -1,0 +1,97 @@
+<?php
+ob_start();
+include_once 'connect.php';
+include_once 'shell.php';
+
+?>
+<html>
+<div id="MaintenanceContainerSalesRep">
+<p style="text-align: center;"><b><font size="6">Sales Representative</font></b></p><br/>
+<form method="post">
+<label for="repnum">Search By <br>Representative Number:</label>
+		<input type="text" id="repnum" name="repnum"  />
+		<input type="submit" value="Search" name="search">
+		</form>
+		
+
+<?php
+if(isset($_POST['search']))
+{
+	$repnum=$_POST['repnum'];
+	if($repnum == NULL)
+	{
+	?>
+	<script>
+		alert("Please enter a representative number to search for.");
+	</script>
+	<?php
+	}
+	else
+	{
+		
+		$query=mysql_query("select * from REP where REP_NUM='$repnum'");
+		if($query)
+		{
+			//it worked
+		}
+		else
+		{
+			die('<p> Query Error: .<b> ' . mysql_error().'</b></p>');
+		}
+		$num_rows=mysql_num_rows($query);
+		?>
+		<center><table border="1" >
+			<tr>
+			<td><p>Rep Number</p></td>
+			<td><p>Last Name</p></td>
+			<td><p>First Name</p></td>
+			<td><p>Street</p></td>
+			<td><p>City</p></td>
+			<td><p>State</p></td>
+			<td><p>Zip</p></td>
+			<td><p>Comission</p></td>
+			<td><p>Rate</p></td>
+			</tr>
+		<?php
+		if($num_rows == 1)
+		{
+			while($num_row=mysql_fetch_array($query))
+			{
+				?>
+				<html>
+				<tr>
+				<td><?php echo "{$num_row['REP_NUM']}"; ?></td>
+				<td><?php echo "{$num_row['LAST_NAME']}"; ?></td>
+				<td><?php echo "{$num_row['FIRST_NAME']}"; ?></td>
+				<td><?php echo "{$num_row['STREET']}"; ?></td>
+				<td><?php echo "{$num_row['CITY']}"; ?></td>
+				<td><?php echo "{$num_row['STATE']}"; ?></td>
+				<td><?php echo "{$num_row['ZIP']}"; ?></td>
+				<td><?php echo "{$num_row['COMMISSION']}"; ?></td>
+				<td><?php echo "{$num_row['RATE']}"; ?></td>
+				</tr>
+				</html>
+				<?php
+
+			}
+		}
+		else
+		{
+		?>
+			<script>
+			alert("That Representative number does not match anything in our records.");
+			</script>
+		<?php
+		}
+	}
+}
+?>
+</table><center>
+ <p style="text-align: center;"><a href="Premiere_Products_Listings.html"><b>Back to Listings Home</b></a></p><br />
+<center><span style="">  Date Last Updated: 02/10/2013 Webmaster: pebcac@pebcac.com </span></center>
+</div>
+ </html>
+
+<?php
+ob_flush();
+?>

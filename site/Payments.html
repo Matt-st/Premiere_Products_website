@@ -1,0 +1,78 @@
+<?php
+ob_start();
+session_start();
+include_once 'connect.php';
+include_once 'shell.php';
+global $customernum;
+
+			if(isset($_POST['payment']))
+			{	
+			
+				$paymentnum=$_POST['paymentnum'];
+				$newbalance = $balance - $paymentnum;
+				$updatequery=mysql_query("UPDATE CUSTOMER SET BALANCE='$newbalance' where CUSTOMER_NUM='$customernum' ");
+				if($customer)
+				{//it worked dont do anything 
+				
+				}
+				else
+				{die('<p> Query Error: .<b> ' . mysql_error().'</b></p>');}
+			}
+?>
+
+<html>
+<div id="MaintenanceContainerSalesRep">
+	<p style="text-align: center;"><b><font size="6">Make A Payment</font></b></p><br/>
+<form method="post">
+<label for="customernum">Enter Customer Number:</label>
+		<input type="text" id="customernum" name="customernum" />
+		<input type="submit" value="Search" name="search">
+</form>	
+	<?php
+	if(isset($_POST['search']))
+	{	
+		$customernum=$_POST['customernum'];
+		$_SESSION['customernum'] = $customernum;
+		if($customernum != NULL)
+		{
+				$customer=mysql_query("select * from CUSTOMER where CUSTOMER_NUM='$customernum'");
+				if($customer)
+				{//it worked dont do anything 
+						
+				}
+				else
+				{die('<p> Query Error: .<b> ' . mysql_error().'</b></p>');}
+				$num=mysql_num_rows($customer);
+				if($num >= 1){
+						header("location:makepayment.html");
+				}
+				else
+				{
+					?>
+					<script>
+						alert("Please enter a valid customer number. ");
+					</script>
+					<?php
+				
+				}
+				}
+		else
+		{
+			?>
+			<script>
+				alert("Please enter a customer number. ");
+			</script>
+			<?php
+			
+		}
+						
+	}
+	
+?>		
+<p style="text-align: center;"><a href="Premiere_Products_Listings.html"><b>Back to Listings Home</b></a></p><br />	
+<br>
+	<center><span style="">  Date Last Updated: 02/10/2013 Webmaster: pebcac@pebcac.com </span></center>	
+	</div>
+<?php
+ob_flush();
+?>

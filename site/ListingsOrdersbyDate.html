@@ -1,0 +1,94 @@
+<?php
+ob_start();
+include_once 'connect.php';
+include_once 'shell.php';
+
+?>
+<html>
+<div id="MaintenanceContainerSalesRep">
+	<p style="text-align: center;"><b><font size="6">Customer Order Information</font></b></p><br/>
+	<form method="post">
+	<label for="customernum">Search By <br>Customer Number:</label>
+		<input type="text" id="customernum" name="customernum"  /><br>
+				and
+				<br>
+		<label for="orderdate">Search By <br>Order Date:</label>
+		<input type="text" id="orderdate" name="orderdate"  />
+		<input type="submit" value="Search" name="search">
+	</form>
+	
+	
+<?php
+if(isset($_POST['search']))
+{
+	$num=$_POST['customernum'];
+	$orderdate=$_POST['orderdate'];
+	if($num == NULL){
+	?>
+	<script>
+		alert("Please enter a customer number.");
+	</script>
+	<?php
+	}
+	else if($orderdate == NULL){
+	?>
+	<script>
+		alert("Please enter a order date.");
+	</script>
+	<?php
+	}
+	else
+	{
+		$query = mysql_query("select * from ORDERS where CUSTOMER_NUM='$num' and ORDER_DATE='$orderdate' ");
+		
+		if($query)
+		{//it worked
+		}
+		else
+		{
+			die('<p> Query Error: .<b> ' . mysql_error().'</b></p>');
+		}
+		$num_rows=mysql_num_rows($query);
+		?>
+		<center><table border="1" >
+			<tr>
+			<td><p>Order Number</p></td>
+			<td><p>Order Date</p></td>
+			<td><p>Customer Number</p></td>
+			</tr>
+		<?php
+		if($num_rows >= 1)
+		{
+				while($num_row=mysql_fetch_array($query))
+					{
+						?>
+						<html>
+						<tr>
+						<td><?php echo "{$num_row['ORDER_NUM']}"; ?></td>
+						<td><?php echo "{$num_row['ORDER_DATE']}"; ?></td>
+						<td><?php echo "{$num_row['CUSTOMER_NUM']}"; ?></td>
+						</tr>
+						</html>
+						<?php
+
+					}
+		}
+		else
+		{
+		?>
+				<script>
+				alert("That customer number and order date does not match anything in our records.");
+				</script>
+		<?php
+		}
+	}
+}
+?>
+</table><center>
+<p style="text-align: center;"><a href="Premiere_Products_Listings.html"><b>Back to Listings Home</b></a></p><br />
+<center><span style="">  Date Last Updated: 02/10/2013 Webmaster: pebcac@pebcac.com </span></center>
+</html>
+
+<?php
+ob_flush();
+?>

@@ -1,0 +1,121 @@
+<?php
+ob_start();
+include_once 'connect.php';
+include_once 'shell.php';
+
+
+?>
+<script type="text/javascript">
+function confirmPayment(){
+var str = document.getElementById('paymentnum').value;
+if (str=="")
+  {
+  alert("Please enter a payment"):
+  return;
+  } 
+else{
+
+	if (confirm('Are you sure you want to delete this?')) {	
+
+			if (window.XMLHttpRequest)
+			{// code for IE7+, Firefox, Chrome, Opera, Safari
+				xmlhttp=new XMLHttpRequest();
+			}
+			else
+			{// code for IE6, IE5
+				xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			xmlhttp.onreadystatechange=function()
+				{						
+					if (xmlhttp.readyState==4 && xmlhttp.status==200)
+					{
+					document.getElementById("txtHint").innerHTML=xmlhttp.responseText;
+					alert("Payment has been processed. Thank you for your business.");
+					}
+				}
+			xmlhttp.open("POST","Delete.php?q="+str,false);
+			xmlhttp.send();
+			}
+	}
+}
+  
+</script>
+<html>
+<div id="MaintenanceContainerSalesRep">
+	<p style="text-align: center;"><b><font size="6">Make A Payment</font></b></p><br/>
+<form method="post">
+<label for="customernum">Enter Customer Number:</label>
+		<input type="text" id="customernum" name="customernum" />
+		<input type="submit" value="Search" name="search">
+</form>	
+	<?php
+	if(isset($_POST['search']))
+	{	
+		$customernum=$_POST['customernum'];
+		
+		if($customernum != NULL)
+		{
+			$customer=mysql_query("select * from CUSTOMER where CUSTOMER_NUM='$customernum'");
+			if($customer)
+			{//it worked dont do anything 
+			
+			}
+			else
+			{die('<p> Query Error: .<b> ' . mysql_error().'</b></p>');}
+			
+			?>
+			<center><table >
+			<tr>
+			<td><p>Customer Number</p></td>
+			<td><p>Customer Name</p></td>
+			<td><p>Balance</p></td>
+			<td><p>Credit Limit</p></td>
+			<td><p>Representative Number</p></td>
+			</tr>
+			<?php
+			while($num_row=mysql_fetch_array($customer))
+			{
+				?>
+			
+				<tr>
+				<td><?php echo "{$num_row['CUSTOMER_NUM']}"; ?></td>
+				<td><?php echo "{$num_row['CUSTOMER_NAME']}"; ?></td>
+				<td><?php echo "{$num_row['BALANCE']}"; ?></td>
+				<td><?php echo "{$num_row['CREDIT_LIMIT']}"; ?></td>
+				<td><?php echo "{$num_row['REP_NUM']}"; ?></td>
+				</tr>
+				
+				<?php
+				
+			}
+			?>
+			</table></center>
+			<form method="post">
+			<label for="customernum">Enter Payment:</label>
+					<input type="text" id="paymentnum" name="paymentnum" />
+					<input type="submit" value="Submit" name="payment" onclick="confirmPayment()" />
+			</form>	
+			<?php
+			
+			
+		}
+		else
+		{
+			?>
+			<script>
+				alert("Please enter a customer number. ");
+			</script>
+			<?php
+			
+		}
+	}
+	
+?>		
+<p style="text-align: center;"><a href="Premiere_Products_Listings.html"><b>Back to Listings Home</b></a></p><br />	
+<br>
+	<div id="txtHint"><b>Person info will be listed here.</b></div>
+<center><span style="">  Date Last Updated: 02/10/2013 Webmaster: pebcac@pebcac.com </span></center>	
+	</div>
+<?php
+ob_flush();
+?>

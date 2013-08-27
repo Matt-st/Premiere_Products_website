@@ -1,0 +1,106 @@
+<?php
+ob_start();
+include_once 'connect.php';
+include_once 'shell.php';
+?>
+<html>
+<div id="MaintenanceContainerSalesRep">
+<p style="text-align: center;"><b><font size="6">Order</font></b></p><br/>
+<form method="post">
+<label for="ordernum">Enter Order Number:</label>
+		<input type="text" id="ordernum" name="ordernum" />
+		<input type="submit" value="Search" name="search">
+</form>	
+	<?php
+	if(isset($_POST['search']))
+	{	
+		$ordernum=$_POST['ordernum'];
+		
+		if($ordernum != NULL)
+		{		$orderquery1=mysql_query("select ORDERS.ORDER_NUM, ORDERS.ORDER_DATE, CUSTOMER.CUSTOMER_NUM, CUSTOMER.CUSTOMER_NAME, CUSTOMER.STREET, CUSTOMER.CITY, CUSTOMER.STATE, CUSTOMER.ZIP, REP.REP_NUM, REP.FIRST_NAME, REP.LAST_NAME,
+				PART.PART_NUM, PART.DESCRIPTION, ORDER_LINE.NUM_ORDERED, ORDER_LINE.QOUTED_PRICE,ROUND((ORDER_LINE.NUM_ORDERED * ORDER_LINE.QOUTED_PRICE),2) AS TOTAL from ORDERS, REP, ORDER_LINE, CUSTOMER, PART where
+				ORDERS.ORDER_NUM='$ordernum' and ORDER_LINE.ORDER_NUM=ORDERS.ORDER_NUM and ORDERS.CUSTOMER_NUM=CUSTOMER.CUSTOMER_NUM and CUSTOMER.REP_NUM=REP.REP_NUM and PART.PART_NUM=ORDER_LINE.PART_NUM");
+				$orderquery=mysql_query("select ORDERS.ORDER_NUM, ORDERS.ORDER_DATE, CUSTOMER.CUSTOMER_NUM, CUSTOMER.CUSTOMER_NAME, CUSTOMER.STREET, CUSTOMER.CITY, CUSTOMER.STATE, CUSTOMER.ZIP, REP.REP_NUM, REP.FIRST_NAME, REP.LAST_NAME,
+				PART.PART_NUM, PART.DESCRIPTION, ORDER_LINE.NUM_ORDERED, ORDER_LINE.QOUTED_PRICE,ROUND((ORDER_LINE.NUM_ORDERED * ORDER_LINE.QOUTED_PRICE),2) AS TOTAL from ORDERS, REP, ORDER_LINE, CUSTOMER, PART where
+				ORDERS.ORDER_NUM='$ordernum' and ORDER_LINE.ORDER_NUM=ORDERS.ORDER_NUM and ORDERS.CUSTOMER_NUM=CUSTOMER.CUSTOMER_NUM and CUSTOMER.REP_NUM=REP.REP_NUM and PART.PART_NUM=ORDER_LINE.PART_NUM");
+				if($orderquery)
+				{//it worked dont do anything
+					
+				
+				
+				}
+				else
+				{die('<p> Query Error: .<b> ' . mysql_error().'</b></p>');}
+		
+			$num_row=mysql_fetch_array($orderquery)
+			?>
+			
+			<center><table >
+			<tr >
+			<td width="400" align="left">Order:<?php echo "{$num_row['0']}"; ?></td>
+			<td></td>
+			<td width="400" align="right">Date:<?php echo "{$num_row['1']}"; ?></td>
+			</tr>
+			<tr>
+			<td>Customer:<?php echo "{$num_row['CUSTOMER_NUM']} <br>"; echo "{$num_row['CUSTOMER_NAME']} <br>"; echo "{$num_row['STREET']}<br> "; echo "{$num_row['CITY']} "; echo "{$num_row['STATE']} "; echo "{$num_row['ZIP']} ";?></td>
+			<td></td>
+			<td align="right">Sales Rep: <?php echo "{$num_row['REP_NUM']} <br>"; echo "{$num_row['FIRST_NAME']} "; echo "{$num_row['LAST_NAME']} ";?></td>
+			</tr>
+			</table></center>
+			<center><table >
+			<tr>
+			<td><p>Part Number</p></td>
+			<td><p>Part Description</p></td>
+			<td><p>Number Ordered</p></td>
+			<td><p>Price</p></td>
+			<td><p>Total</p></td>
+			</tr>
+			<?php
+			
+			while($num_row=mysql_fetch_array($orderquery1))
+			{
+			?>
+			
+		
+			<tr>
+			<td width="100"><?php echo "{$num_row['PART_NUM']}"; ?></td>
+			<td><?php echo "{$num_row['DESCRIPTION']}"; ?></td>
+			<td><?php echo "{$num_row['NUM_ORDERED']}"; ?></td>
+			<td><?php echo "{$num_row['QOUTED_PRICE']}"; ?></td>
+			<td><?php echo "{$num_row['TOTAL']}"; ?></td>
+			
+			</tr>
+			
+			<?php
+			$total= $total + $num_row['TOTAL'];
+			}
+			?>
+			</table></center>
+			<center><table>
+			<tr>
+			<td><p>Order Total >></p></td>
+			<td><?php echo "$total";?></td>
+			</tr>
+			</table></center>
+			<?php
+
+		}
+		else
+		{
+		?>
+		<script>
+			alert("Please enter a order number. ");
+		</script>
+		<?php
+		}
+	}
+	?>
+
+
+<p style="text-align: center;"><a href="Premiere_Products_Listings.html"><b>Back to Listings Home</b></a></p><br />
+<center><span style="">  Date Last Updated: 02/10/2013 Webmaster: pebcac@pebcac.com </span></center>
+</div>
+</html>
+<?php
+ob_flush();
+?>

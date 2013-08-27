@@ -1,0 +1,311 @@
+<?php
+ob_start();
+include_once 'connect.php';
+include_once 'shell.php';
+?>
+<div id="MaintenanceContainerSalesRep">
+<?php
+if(isset($_POST['retrieve']))
+{
+
+	$part_array=retrieve_part();
+}
+else if(isset($_POST['insert']))
+{
+	insert_part();
+
+}
+else if(isset($_POST['modify']))
+{
+	modify_part();
+
+}
+else if(isset($_POST['help']))
+{
+	help();
+
+}
+function retrieve_part()
+{
+	$num=$_POST['partnum'];
+	$partnum_query=mysql_query("select * from PART where PART_NUM='$num'");
+	if($partnum_query)
+	{
+		//echo "its good!!";
+	}
+	else
+	{
+		die('<p> Query Error: .<b> ' . mysql_error().'</b></p>');
+	}
+	$num_rows=mysql_num_rows($partnum_query);
+	if($num_rows > 0)
+	{//this query returned a row that matched the number so now we can start to do some fun and cool updateing type things ....not really
+			//how to check and find out which information is being updated
+		while($partnum_row=mysql_fetch_array($partnum_query))
+		{
+			$partnum=$partnum_row['PART_NUM'];
+			$description=$partnum_row['DESCRIPTION'];
+			$onhand=$partnum_row['ON_HAND'];
+			$class=$partnum_row['CLASS'];
+			$warehouse=$partnum_row['WAREHOUSE'];
+			$price=$partnum_row['PRICE'];
+			//echo '<input type="text" id="lastname" name="lastname" value='; echo $lname; echo ' />';
+		}
+		$partinfo_array=array($partnum, $description, $onhand, $class, $warehouse, $price);
+		return $partinfo_array;		
+	
+	}
+	else
+	{
+	?>
+		<script>
+			alert("The data that you requested to retrieve was not found in the database.");
+		</script>
+	<?php
+	
+	}
+	
+}//end retrieve_part function
+
+function insert_part()
+{//insert informaiton into the table
+	$partnum=$_POST['partnum'];
+	$description=$_POST['description'];
+	$onhand=$_POST['onhand'];
+	$class=$_POST['class'];
+	$warehouse=$_POST['warehouse'];
+	$price=$_POST['price'];
+	//need to verify that the data has been sent properly
+	if(($partnum != NULL) && ($description != NULL) && ($onhand != NULL) && ($class != NULL) && ($warehouse != NULL) && ($price != NULL))
+	{
+		//all the information from enterd and nothing was empty
+		//perform a query to insert the infromation in the database
+		$insert_query=mysql_query("INSERT INTO PART (PART_NUM, DESCRIPTION, ON_HAND, CLASS, WAREHOUSE, PRICE) VALUES('$partnum', '$description', '$onhand', '$class', '$warehouse', '$price')");
+		//check to make sure this query was performed correctly
+		if($insert_query)
+		{
+		?>
+		<div id="txtHint">
+			The record has been inserted!
+		<table border="1" >
+			<tr>
+			<td><p>Part Number</p></td>
+			<td><p>Description</p></td>
+			<td><p>On Hand</p></td>
+			<td><p>Class</p></td>
+			<td><p>Warehouse</p></td>
+			<td><p>Price</p></td>
+			</tr>
+			<?php
+			
+				$query=mysql_query("select * from PART where PART_NUM='$partnum'");
+				if($query)
+				{}
+				else
+				{die('<p> Query Error: .<b> ' . mysql_error().'</b></p>');}
+				
+				while($num_row =mysql_fetch_array($query))
+				{
+				
+				?>
+				<html>
+				<tr>
+				<td><?php echo "{$num_row['PART_NUM']}"; ?></td>
+				<td><?php echo "{$num_row['DESCRIPTION']}"; ?></td>
+				<td><?php echo "{$num_row['ON_HAND']}"; ?></td>
+				<td><?php echo "{$num_row['CLASS']}"; ?></td>
+				<td><?php echo "{$num_row['WAREHOUSE']}"; ?></td>
+				<td><?php echo "{$num_row['PRICE']}"; ?></td>
+				</tr>
+				
+			<?php
+				}
+				?>
+				</table>
+				</div>
+				</html>
+				<?php
+		}
+		else
+		{//if trhe query failed let me know why
+			die('<p> Query Error: .<b> ' . mysql_error().'</b></p>');
+		}
+	}
+	else
+	{//let the user know data wasnt properly enterd
+	?>
+		<script>
+		alert("The data for insertion was not properly filled out.");
+		</script>
+	<?php
+
+	}
+}
+?>
+<script type="text/javascript">
+function confirmDelete(){
+var str = document.getElementById('partnum').value;
+if (str=="")
+  {
+   document.getElementById("txtHint").innerHTML="";
+  return;
+  } 
+else{
+
+	if (confirm('Are you sure you want to delete this?')) {	
+
+			if (window.XMLHttpRequest)
+			{// code for IE7+, Firefox, Chrome, Opera, Safari
+				xmlhttp=new XMLHttpRequest();
+			}
+			else
+			{// code for IE6, IE5
+				xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			xmlhttp.onreadystatechange=function()
+				{						
+					if (xmlhttp.readyState==4 && xmlhttp.status==200)
+					{
+					document.getElementById("txtHint").innerHTML=xmlhttp.responseText;
+					alert("properly deleted");
+					}
+				}
+			xmlhttp.open("POST","DeletePart.php?q="+str,false);
+			xmlhttp.send();
+			}
+	}
+}
+  
+</script>
+
+
+<html>
+
+	
+	<p style="text-align: center;"><b><font size="6">Parts</font></b></p><br/>
+	<form method="post">
+	<p style="text-align: center;">
+		<label for="partnum">Part Number:</label>
+		<input type="text" id="partnum" name="partnum" value = "<?=$part_array[0]?>" />
+		<label for="description">Description:</label>
+		<input type="text" id="description" name="description" value = "<?=$part_array[1]?>" />
+		<label for="onhand">On Hand:</label>
+		<input type="text" id="onhand" name="onhand" value = "<?=$part_array[2]?>" />
+		<br />
+		<label for="class">Class:</label>
+		<input type="text" id="class" name="class" value = "<?=$part_array[3]?>" />
+		<label for="warehouse">Warehouse:</label>
+		<input type="text" id="warehouse" name="warehouse" value = "<?=$part_array[4]?>" />
+		<label for="price">Price:</label>
+		<input type="text" id="price" name="price" value = "<?=$part_array[5]?>" /></p>
+		<br />
+		<p style="text-align: center;"><input type="submit" value="Retrieve" name="retrieve">
+		<input type="submit" value="Insert" name="insert">
+		<input type="submit" value="Delete" name="delete" onclick="confirmDelete()"/>
+		<input type="submit" value="Modify" name="modify">
+		<input type="submit" value="Help" name="help"></p>
+		<br />
+		<p style="text-align: center;"><a href="PremiereProductsMaintenance.html"><b>Back to Maintenance Home</b></a></p><br />
+	</form>
+	<br>
+	<div id="txtHint"><b>Person info will be listed here.</b></div>
+	
+
+
+</html>
+
+<?php
+
+
+function modify_part()
+{//what does it really mean to modify--- update
+	$partnum=$_POST['partnum'];
+	$description=$_POST['description'];
+	$onhand=$_POST['onhand'];
+	$class=$_POST['class'];
+	$warehouse=$_POST['warehouse'];
+	$price=$_POST['price'];
+	//need to verify that the data has been sent properly
+	if(($partnum != NULL) && ($description != NULL) && ($onhand != NULL) && ($class != NULL) && ($warehouse != NULL) && ($price != NULL))
+	{
+		$part_update=mysql_query("UPDATE PART SET DESCRIPTION='$description', ON_HAND='$onhand', CLASS='$class', WAREHOUSE='$warehouse', PRICE='$price' where PART_NUM='$partnum' ");
+			if($part_update)
+			{
+			?>
+			<div id="txtHint">
+			The record has been updated!
+		<table border="1" >
+			<tr>
+			<td><p>Part Number</p></td>
+			<td><p>Description</p></td>
+			<td><p>On Hand</p></td>
+			<td><p>Class</p></td>
+			<td><p>Warehouse</p></td>
+			<td><p>Price</p></td>
+			</tr>
+			<?php
+			
+				$query=mysql_query("select * from PART where PART_NUM='$partnum'");
+				if($query)
+				{}
+				else
+				{die('<p> Query Error: .<b> ' . mysql_error().'</b></p>');}
+				
+				while($num_row =mysql_fetch_array($query))
+				{
+				
+				?>
+				<html>
+				<tr>
+				<td><?php echo "{$num_row['PART_NUM']}"; ?></td>
+				<td><?php echo "{$num_row['DESCRIPTION']}"; ?></td>
+				<td><?php echo "{$num_row['ON_HAND']}"; ?></td>
+				<td><?php echo "{$num_row['CLASS']}"; ?></td>
+				<td><?php echo "{$num_row['WAREHOUSE']}"; ?></td>
+				<td><?php echo "{$num_row['PRICE']}"; ?></td>
+				
+				</tr>
+				
+			<?php
+				}
+				?>
+				</table>
+				</div>
+				</html>				
+				<?php
+			}
+			else
+			{
+				die('<p> Query Error: .<b> ' . mysql_error().'</b></p>');
+			
+			}
+		}
+		else
+		{
+		?>
+		<script>
+		alert("Please properly fill out all text feilds.");
+		</script>
+		<?php
+		}
+		
+		
+		
+}		
+
+
+	function help()
+	{
+		?>
+		<script>
+		alert("How to use this page: To retrieve please enter a valid representative number. To insert please properly fill out all text fields and then click Insert.  To Delete please enter a Representative number and click Delete.  To Modify please Retrieve information based on a Representative Number and then make changes then click modify.");
+		</script>
+		<?php
+
+
+	}
+?>
+<center><span style="">  Date Last Updated: 02/10/2013 Webmaster: pebcac@pebcac.com </span></center>
+	</div>
+
+<?php ob_flush();//Flush buffer output ALWAYS AT THE END OF FILE!!!!!!!! ?>

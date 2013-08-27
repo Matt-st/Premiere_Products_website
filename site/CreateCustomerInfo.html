@@ -1,0 +1,58 @@
+<?php
+ob_start();
+include_once 'connect.php';
+include_once 'shell.php';
+
+?>
+<html>
+<div id="MaintenanceContainerSalesRep">
+	<p style="text-align: center;"><b><font size="6">Customer Information</font></b></p><br/>
+	<center><table border="1" >
+			<tr>
+			<td><p>Customer Number</p></td>
+			<td><p>Customer Name</p></td>
+			<td><p>Street</p></td>
+			<td><p>City</p></td>
+			<td><p>State</p></td>
+			<td><p>Zip</p></td>
+			<td><p>Balance</p></td>
+			<td><p>Credit Limit</p></td>
+			<td><p>Representative Number</p></td>
+			</tr>
+	
+<?php
+$query = mysql_query("select * from CUSTOMER");
+	if($query)
+	{//it worked
+	}
+	else
+	{
+		die('<p> Query Error: .<b> ' . mysql_error().'</b></p>');
+	}
+	while($num_row=mysql_fetch_array($query))
+		{
+			?>
+			<html>
+			<tr>
+			<td><?php echo "{$num_row['CUSTOMER_NUM']}"; ?></td>
+			<td><?php echo "{$num_row['CUSTOMER_NAME']}"; ?></td>
+			<td><?php echo "{$num_row['STREET']}"; ?></td>
+			<td><?php echo "{$num_row['CITY']}"; ?></td>
+			<td><?php echo "{$num_row['STATE']}"; ?></td>
+			<td><?php echo "{$num_row['ZIP']}"; ?></td>
+			<td><?php echo "{$num_row['BALANCE']}"; ?></td>
+			<td><?php echo "{$num_row['CREDIT_LIMIT']}"; ?></td>
+			<td><?php echo "{$num_row['REP_NUM']}"; ?></td>
+			</tr>
+			</html>
+			<?php
+
+		}
+?>
+</table><center>
+<p style="text-align: center;"><a href="Premiere_Products_Listings.html"><b>Back to Listings Home</b></a></p><br />
+<center><span style="">  Date Last Updated: 02/10/2013 Webmaster: pebcac@pebcac.com </span></center>
+</html>
+<?php
+ob_flush();
+?>

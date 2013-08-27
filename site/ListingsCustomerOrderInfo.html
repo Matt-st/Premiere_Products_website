@@ -1,0 +1,214 @@
+<?php
+ob_start();
+include_once 'connect.php';
+include_once 'shell.php';
+
+?>
+<html>
+<div id="MaintenanceContainerSalesRep">
+	<p style="text-align: center;"><b><font size="6">Customer Order Information</font></b></p><br/>
+	<form method="post">
+	<label for="customernum">Search By <br>Customer Number:</label>
+		<input type="text" id="customernum" name="customernum"  />
+		<input type="submit" value="Search" name="search"><br><br>
+		<label for="ordnum">Search By <br>Order Number:</label>
+		<input type="text" id="ordnum" name="ordnum"  />
+		<input type="submit" value="Search" name="ordsearch"><br><br>
+		<label for="datenum">Search By <br>Date:</label>
+		<input type="text" id="datenum" name="datenum"  />To
+		<input type="text" id="datenum2" name="datenum2"  />
+		<input type="submit" value="Search" name="datesearch">
+	</form>
+	
+	
+<?php
+if(isset($_POST['search']))
+{
+	$num=$_POST['customernum'];
+	if($num == NULL)
+	{
+	?>
+	<script>
+		alert("Please enter a customer number to search for.");
+	</script>
+	<?php
+	}
+	else
+	{
+		$query = mysql_query("select * from ORDERS, ORDER_LINE where ORDERS.CUSTOMER_NUM='$num' and ORDERS.ORDER_NUM=ORDER_LINE.ORDER_NUM ORDER BY CUSTOMER_NUM");
+		if($query)
+		{//it worked
+		}
+		else
+		{
+			die('<p> Query Error: .<b> ' . mysql_error().'</b></p>');
+		}
+		
+		$num_rows=mysql_num_rows($query);
+		if($num_rows >= 1)
+		{
+		?>
+		<center><table border="1" >
+			<tr>
+			<td><p>Customer Number</p></td>
+			<td><p>Order Date</p></td>
+			<td><p>Order Number</p></td>
+			<td><p>Part Number</p></td>
+			</tr>
+			<?php
+				while($num_row=mysql_fetch_array($query))
+				{
+					?>
+					<html>
+					<tr>
+					<td><?php echo "{$num_row['CUSTOMER_NUM']}"; ?></td>
+					<td><?php echo "{$num_row['ORDER_DATE']}"; ?></td>
+					<td><?php echo "{$num_row['ORDER_NUM']}"; ?></td>
+					<td><?php echo "{$num_row['PART_NUM']}"; ?></td>
+					</tr>
+					</html>
+					<?php
+
+				}
+		}
+		else
+		{
+		?>
+			<script>
+			alert("That customer number does not match anything in our records.");
+			</script>
+		<?php
+		}
+	}
+}
+else if(isset($_POST['ordsearch']))
+{
+	$ordnum=$_POST['ordnum'];
+		if($ordnum == NULL)
+		{
+		?>
+		<script>
+			alert("Please enter a order number to search for.");
+		</script>
+		<?php
+		}
+		else
+		{
+			$query=mysql_query("select * from ORDERS, ORDER_LINE where ORDERS.ORDER_NUM = '$ordnum' and ORDERS.ORDER_NUM=ORDER_LINE.ORDER_NUM");
+			if($query)
+			{//it worked
+			}
+			else
+			{
+				die('<p> Query Error: .<b> ' . mysql_error().'</b></p>');
+			}
+			
+			$num_rows=mysql_num_rows($query);
+			if($num_rows >= 1)
+			{
+			?>
+			<center><table border="1" >
+				<tr>
+				<td><p>Order Number</p></td>
+				<td><p>Order Date</p></td>
+				<td><p>Customer Number</p></td>
+				<td><p>Part Number</p></td>
+				</tr>
+				<?php
+					while($num_row=mysql_fetch_array($query))
+					{
+						?>
+						<html>
+						<tr>
+						<td><?php echo "{$num_row['ORDER_NUM']}"; ?></td>
+						<td><?php echo "{$num_row['ORDER_DATE']}"; ?></td>
+						<td><?php echo "{$num_row['CUSTOMER_NUM']}"; ?></td>
+						<td><?php echo "{$num_row['PART_NUM']}"; ?></td>
+						</tr>
+						</html>
+						<?php
+
+					}
+			}
+			else
+			{
+			?>
+				<script>
+				alert("That order number does not match anything in our records.");
+				</script>
+			<?php
+			}
+		}
+
+
+}
+else if(isset($_POST['datesearch']))
+{
+$datestart=$_POST['datenum'];
+$dateend=$_POST['datenum2'];
+if(($datestart == NULL) || ($dateend == NULL))
+		{
+		?>
+		<script>
+			alert("Please enter a date to search for.");
+		</script>
+		<?php
+		}
+		else
+		{
+		$query=mysql_query("select * from ORDERS, ORDER_LINE where ORDERS.ORDER_DATE between'$datestart' and '$dateend' and ORDER_LINE.ORDER_NUM=ORDERS.ORDER_NUM");
+			if($query)
+			{//it worked
+			}
+			else
+			{
+				die('<p> Query Error: .<b> ' . mysql_error().'</b></p>');
+			}
+			
+			$num_rows=mysql_num_rows($query);
+			if($num_rows >= 1)
+			{
+			?>
+			<center><table border="1" >
+				<tr>
+				<td><p>Order Date</p></td>
+				<td><p>Order Number</p></td>
+				<td><p>Customer Number</p></td>
+				<td><p>Part Number</p></td>
+				</tr>
+				<?php
+					while($num_row=mysql_fetch_array($query))
+					{
+						?>
+						<html>
+						<tr>
+						<td><?php echo "{$num_row['ORDER_DATE']}"; ?></td>
+						<td><?php echo "{$num_row['ORDER_NUM']}"; ?></td>
+						<td><?php echo "{$num_row['CUSTOMER_NUM']}"; ?></td>
+						<td><?php echo "{$num_row['PART_NUM']}"; ?></td>
+						</tr>
+						</html>
+						<?php
+
+					}
+			}
+			else
+			{
+			?>
+				<script>
+				alert("That order number does not match anything in our records.");
+				</script>
+			<?php
+			}
+		}
+
+}
+?>
+</table><center>
+<p style="text-align: center;"><a href="Premiere_Products_Listings.html"><b>Back to Listings Home</b></a></p><br />
+<center><span style="">  Date Last Updated: 02/10/2013 Webmaster: pebcac@pebcac.com </span></center>
+</html>
+
+<?php
+ob_flush();
+?>

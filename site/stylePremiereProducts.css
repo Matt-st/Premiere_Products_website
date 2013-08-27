@@ -1,0 +1,267 @@
+/* Style body of Site */
+#homediv{
+width: 100%;
+height: 25%;
+position: absolute;
+top: 0%;
+left: 0%;
+}
+img {
+max-width: 100%;
+min-width:50px;
+}
+#HomeImg{
+height: 12%;
+width: 12%;
+position: absolute;
+top: 1%;
+left: 0%;
+}
+#Title{
+text-align: center;
+color: black;
+background-color: #6495ED;
+border: 1px solid black;
+padding: 5px;
+/*float: center;*/
+height:50%;
+min-height: 50px;
+width:80%;
+min-width:400px;
+position: relative;
+top: 1%;
+left: 12.6%;
+}
+
+#HomeContainer{
+/*border: 1px solid black;*/
+height:80%;
+min-height:500px ;
+width:78.79%;
+min-width:500px;
+position: absolute;
+top: 14%;
+left: 12.15%;
+}
+#HomeComtainer span{
+   position: absolute;
+   bottom: 0;
+   right: 33%;
+
+}
+
+	#HomeMaintenance{
+	text-align: center;
+	/*border: 1px solid black;*/
+	height:75%;
+	width:49.66667%;/*745px*/
+	float: left;
+	background:url(wrench.jpg) no-repeat center center;
+	}
+		#MaintenanceButtons {
+		/*border: 1px solid black;*/
+		background:url(wrench.jpg) no-repeat center center;
+		height:74.375%;
+		width:49.66667%;
+		float: left;
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+		}
+		
+		#MaintenanceButtons ul li  {
+		display: inline;
+		padding: 50;
+		}
+			#maintenancebuttons2 {
+			/*border: 1px solid black;*/
+			height:10%;
+			width:100%;
+			float: left;
+			margin: 0;
+			padding: 0;
+			list-style-type: none;
+			position: relative;
+			top: 72%;
+			}
+			
+			#maintenancebuttons2 ul li  {
+			display: inline;
+			padding: 125;
+			}
+	#HomeListings{
+	text-align: center;
+	/*border: 1px solid black;*/
+	height:75%;
+	width:49.66667%;
+	float: right;
+	background:url(listings.jpg) no-repeat center center;
+	}
+
+		#ListingButtons{
+		text-align: center;
+		/*border: 1px solid black;*/
+		background:url(listings.jpg) no-repeat center center;
+		height:74.375%;
+		width:49.66667%;
+		float: right;
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+		}
+		
+		#ListingButtons ul li  {
+		display: inline;
+		padding: 50;
+		}
+			#listingsbuttons2 {
+			/*border: 1px solid black;*/
+			height:10%;
+			width:100%;
+			float: left;
+			margin: 0;
+			padding: 0;
+			list-style-type: none;
+			position: relative;
+			top: 72%;
+			}
+			
+			#listingsbuttons2 ul li  {
+			display: inline;
+			padding: 50;
+			}
+			
+#footer {
+	clear:left;
+	position: relative;
+	/*border: 1px solid black;*/
+	float: center;
+	}
+		
+		#footer ul li  {
+		display: inline;
+		padding: 250;
+		}
+/* Style links not working right now  */
+a:link{color:blue; text-decoration: none;}
+a:visited{color: Black; text-decoration: none;}
+a:hover{color: black; text-decoration: none;}
+/**************************Listings**************************************/
+#ListingsContainer{
+background:url(listings.jpg) no-repeat center center;
+/*border: 1px solid black;*/
+height:200%;
+min-height:500px;
+width:82.5%;
+min-width:500px;
+position: relative;
+top: 14%;
+left: 12.15%;
+}
+
+/************************** Maintenance Pages css *********************/
+/*Maintenance Home Page*/
+#MaintenanceContainer{
+background:url(wrench.jpg) no-repeat center center;
+/*border: 1px solid black;*/
+height:200%;
+min-height:500px;
+width:82.5%;
+min-width:500px;
+position: relative;
+top: 14%;
+left: 12.15%;
+}
+#MaintenanceButtonsHome {
+		/*border: 1px solid black;*/
+		height:100%;
+		width:100%;
+		float: center;
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+		}
+		
+		#MaintenanceButtonsHome ul li  {
+		/*display: inline;*/
+		
+		}
+		
+		#MaintenanceButtonsHome  ul li a:hover{
+			text-decoration: underline;
+			}
+			#maintenancebuttons2home {
+			border: 1px solid black;
+			height:10%;
+			width:100%;
+			float: left;
+			margin: 0;
+			padding: 0;
+			list-style-type: none;
+			position: relative;
+			top: 72%;
+			}
+			
+			#maintenancebuttons2home ul li  {
+			/*display: inline;*/
+			}
+			#maintenancebuttons2home ul li a:hover{
+			text-decoration: underline;
+			}
+			
+#footerMain{
+position: absolute;
+top: 400%;
+/*border: 1px solid black;*/
+}
+	/*#footerMain ul li  {
+			display: inline;
+			padding: 15%;
+			}*/
+/*Sales REp Maintenance Page*/
+#MaintenanceContainerSalesRep{
+border: 1px solid black;
+height:300%;
+min-height:500px;
+width:82.5%;
+min-width:800px;
+position: relative;
+top: 20%;
+left: 12.15%;
+}
+#MaintenanceContainer span{
+  position: absolute;
+   bottom: 0;
+   right: 33%;
+}
+#HomeContainer span{
+  position: absolute;
+   bottom: 0;
+   right: 33%;
+}
+#MaintenanceContainerSalesRep span {
+   position: absolute;
+   bottom: 0;
+   right: 33%;
+}
+/*****sub divs for order line maintenance page******/
+#orderlinetable{
+position: relative;
+top: 80%;
+left: 0%;
+
+}
+#updatetable{
+border: 1px solid black;
+position: relative;
+top:80%;
+left: 30%;
+width: 50%;
+height: 20%
+}
+/*too make all of my text boxs on the maintenance pages look orderly */
+form label {
+  display: inline-block;
+  width: 80px;
+  font-weight: bold;
+}
